@@ -1,7 +1,5 @@
 # Task 3 — Basic Vulnerability Scan on Local Machine
 
-**ElevateLabs Cyber Security Internship**
-
 ## Overview
 
 Performed a full-port vulnerability scan on localhost using **Nmap 7.95** with NSE (Nmap Scripting Engine) vulnerability scripts on Kali Linux. This task demonstrates introductory vulnerability assessment skills including scanning, CVE identification, risk rating, and remediation planning.
@@ -60,3 +58,14 @@ The Go HTTP server running on port 38861 was found **likely vulnerable** to the 
 ## Interview Q&A
 
 See full answers in `vulnerability_report.md` — covers all 8 interview questions from the task brief.
+
+## Screenshots
+
+### Scan Running + Initial Results
+![Scan Running](screenshot1_scan_running.png)
+
+### CVE-2007-6750 Slowloris Finding
+![CVE Result](screenshot2_cve_result.png)
+
+### Scan Complete
+![Scan Complete](screenshot3_scan_complete.png)
