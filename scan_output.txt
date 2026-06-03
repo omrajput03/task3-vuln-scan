@@ -1,0 +1,88 @@
+=============================================================
+SCAN 1 — Full Port Vulnerability Scan (Primary Scan)
+Command: nmap -sV -sC --script vuln -p- localhost
+Date: 2026-06-03 21:06 IST
+Duration: 548.43 seconds
+=============================================================
+
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.0000030s latency).
+Not shown: 65534 closed tcp ports (reset)
+
+PORT      STATE SERVICE VERSION
+38861/tcp open  http    Golang net/http server
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+|_http-csrf: Couldn't find any CSRF vulnerabilities.
+| http-slowloris-check:
+|   VULNERABLE:
+|   Slowloris DOS attack
+|     State: LIKELY VULNERABLE
+|     IDs:  CVE:CVE-2007-6750
+|       Slowloris tries to keep many connections to the target web server open and hold
+|       them open as long as possible.  It accomplishes this by opening connections to
+|       the target web server and sending a partial request. By doing so, it starves
+|       the http server's resources causing Denial Of Service.
+|     Disclosure date: 2009-09-17
+|     References:
+|       http://ha.ckers.org/slowloris/
+|_      https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+
+Nmap done: 1 IP address (1 host up) scanned in 548.43 seconds
+
+NOTE: Port 38861 is a high/non-standard port above Nmap's default top-1000
+range. The -p- flag (all ports) was required to discover it.
+
+=============================================================
+SCAN 2 — Default Script Scan, Top 1000 Ports (Comparison)
+Command: nmap -sV --script=default localhost -oN scan_output.txt
+Date: 2026-06-03 21:22 IST
+Duration: 0.48 seconds
+=============================================================
+
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.0000030s latency).
+All 1000 scanned ports on localhost (127.0.0.1) are in ignored states.
+Not shown: 1000 closed tcp ports (reset)
+
+Nmap done: 1 IP address (1 host up) scanned in 0.48 seconds
+
+OBSERVATION: No ports found — the active service runs on port 38861, which
+is outside Nmap's default top-1000 port range. This demonstrates why full
+port scans (-p-) are important; a quick scan would have missed this service
+entirely, creating a false sense of security.
+
+=============================================================
+SCAN 3 — Vuln Script with Unsafe Args, Top 1000 Ports (Comparison)
+Command: nmap --script=vuln --script-args=unsafe=1 localhost
+Date: 2026-06-03 21:23 IST
+Duration: 10.29 seconds
+=============================================================
+
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.0000050s latency).
+All 1000 scanned ports on localhost (127.0.0.1) are in ignored states.
+Not shown: 1000 closed tcp ports (reset)
+
+Nmap done: 1 IP address (1 host up) scanned in 10.29 seconds
+
+OBSERVATION: Again no ports found for the same reason — port 38861 is
+outside the default scan range. This further confirms that non-standard
+ports require explicit full-range scanning to be discovered.
+
+=============================================================
+KEY LEARNING FROM ALL THREE SCANS
+=============================================================
+
+The three scans together illustrate an important real-world lesson:
+
+1. Default/quick scans (top 1000 ports) completed in <11 seconds and
+   found NOTHING — giving a false impression of a clean system.
+
+2. Full port scan (-p-) took ~9 minutes but found a real vulnerability
+   on port 38861 that would have been completely missed otherwise.
+
+3. Services running on non-standard/high ports are a common evasion
+   technique — and a reason thorough scanning matters in assessments.
+
+Conclusion: Always use -p- for comprehensive vulnerability assessments.
