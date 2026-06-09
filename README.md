@@ -1,4 +1,4 @@
-# Task 3 — Basic Vulnerability Scan on Local Machine
+# Basic Vulnerability Scan on Local Machine
 
 ## Overview
 
@@ -54,10 +54,6 @@ The Go HTTP server running on port 38861 was found **likely vulnerable** to the 
 - How to read and interpret CVE entries
 - CVSS scoring and how to prioritize vulnerabilities by context, not just score
 - The difference between "likely vulnerable" (scanner heuristic) vs confirmed exploitation
-
-## Interview Q&A
-
-See full answers in `vulnerability_report.md` — covers all 8 interview questions from the task brief.
 
 ## Screenshots
 
